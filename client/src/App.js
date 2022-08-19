@@ -1,32 +1,44 @@
 import { Fragment, useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './components/navbar';
-import PlayersList from './components/playersList'
+import Form from './components/userForm';
+import UsersList from './components/usersList'
 
 function App() {
-  const [players, setPlayers] = useState([])
+  const [users, setUsers] = useState([])
+  
+  const [user, setUser] = useState({
+    name: '',
+    surname: '',
+    cbu: '',
+    email: ''
+  })
+
+  const [listUpdated, setListUpdated] = useState(false);
 
   useEffect(() => {
     obtenerDatos();
-  }, [])
+    setListUpdated(false)
+  }, [listUpdated])
 
   const obtenerDatos = async() => {
-    const data = await fetch('http://localhost:8000/players')
-    const players = await data.json()
-    setPlayers(players.players)
+    const data = await fetch('http://localhost:8000/users')
+    const users = await data.json()
+    setUsers(users.users)
   }
 
   return (
     <Fragment>
-      <Navbar brand='Players'/>
+      <Navbar brand1='Users' brand2='Events'/>
       <div className='container'>
         <div className='row'>
-          <div className='col-7'>
-            <h2 style={{textAlign: 'center'}}>Players</h2>
-            <PlayersList players={players}/>
+          <div className='col-9'>
+            <h2 style={{textAlign: 'center'}}>Users</h2>
+            <UsersList users={users} listUpdated={listUpdated} setListUpdated={setListUpdated} />
           </div>
-          <div className='col-5'>
-            <h2 style={{textAlign: 'center'}}>New</h2>
+          <div className='col-3'>
+            <h2 style={{textAlign: 'center'}}>New user</h2>
+            <Form user={user} setUser={setUser}></Form>
           </div>
         </div>
       </div>

@@ -1,46 +1,46 @@
 import { Request, Response } from "express"
 import { where } from "sequelize/types";
 import { updateImportEqualsDeclaration } from "typescript";
-import Player from "../models/player"
+import User from "../models/user"
 
-export const getPlayers = async(req: Request, res: Response) => {
-    const players = await Player.findAll();
+export const getUsers = async(req: Request, res: Response) => {
+    const users = await User.findAll();
 
     res.json({
-        players
+        users
     })
 }
 
-export const getPlayer = async(req: Request, res: Response) => {
+export const getUser = async(req: Request, res: Response) => {
     const {id} = req.params;
-    const player = await Player.findByPk(id);
+    const user = await User.findByPk(id);
     
-    if(player) {
-        res.json(player);
+    if(user) {
+        res.json(user);
     } else {
         res.status(404).json({
-            msg: `There's no player with id ${id}`
+            msg: `There's no user with id ${id}`
         })
     }
 }
 
-export const postPlayer = async(req: Request, res: Response) => {
+export const postUser = async(req: Request, res: Response) => {
     const { body } = req;
 
 
     try {
-        const existsEmail = await Player.findOne({
+        const existsEmail = await User.findOne({
             where: {
                 email: body.email
             }
         })
         if(existsEmail) { 
             return res.status(400).json({
-                msg: 'Error, already exists a player with this email'
+                msg: 'Error, already exists a user with this email'
             })
         }
-        const player = Player.build(body);
-        player.save();
+        const user = User.build(body);
+        user.save();
     } catch (error) {
 
     }
@@ -48,24 +48,24 @@ export const postPlayer = async(req: Request, res: Response) => {
 
 
     res.json({
-        msg: 'postPlayer',
+        msg: 'postUser',
         body
     })
 }
 
-export const putPlayer = async(req: Request, res: Response) => {
+export const putUser = async(req: Request, res: Response) => {
     const {id} = req.params;
     const { body } = req;
     
     try {
-        const player = Player.findByPk(id);
-        if(!player){
+        const user = User.findByPk(id);
+        if(!user){
             return res.status(404).json({
                 msg: 'Error, there is not an user with id ' + id 
             })
         }
 
-        await Player.update(body, {
+        await User.update(body, {
             where:{id:id}
         });
     } catch (error) {
@@ -74,20 +74,20 @@ export const putPlayer = async(req: Request, res: Response) => {
         })
     }
     res.json({
-        msg: 'putPlayer',
+        msg: 'putUser',
         body
     })
 }
 
-export const deletePlayer = (req: Request, res: Response) => {
+export const deleteUser = (req: Request, res: Response) => {
     const {id} = req.params;
     
-    const player = Player.findByPk(id);
-    Player.destroy({
+    const user = User.findByPk(id);
+    User.destroy({
         where: {id: id}
     });
     res.json({
-        msg: 'putPlayer',
+        msg: 'putUser',
         id
     })
 }

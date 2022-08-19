@@ -1,5 +1,5 @@
 import express, {Application} from 'express';
-import router from '../routes/player';
+import router from '../routes/user';
 import cors from 'CORS'
 import { textChangeRangeIsUnchanged } from 'typescript';
 import db from '../db/connections';
@@ -8,7 +8,7 @@ class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        players: '/players'
+        users: '/users'
     }
 
     constructor() {
@@ -47,7 +47,7 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.apiPaths.players, router)
+        this.app.use( this.apiPaths.users, router)
     }
 }
 

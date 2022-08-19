@@ -1,11 +1,11 @@
 import { DataTypes } from "sequelize";
 import db from "../db/connections";
 
-const Player = db.define('Player', {
+const Event = db.define('Event', {
     name: {
         type: DataTypes.STRING
     },
-    surname: {
+    description: {
         type: DataTypes.STRING
     },
     cbu: {
@@ -13,7 +13,9 @@ const Player = db.define('Player', {
     },
     email: {
         type: DataTypes.STRING
+        
+        
     },
 }); 
 
-export default Player;
+export default Event;
